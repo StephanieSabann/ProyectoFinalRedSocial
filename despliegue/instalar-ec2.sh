@@ -38,7 +38,7 @@ fi
 
 echo "==> 3/8 Node.js 20, Nginx y Certbot"
 if ! command -v node >/dev/null || [[ "$(node -v)" != v20* && "$(node -v)" != v22* ]]; then
-  curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+  curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
   apt-get install -y nodejs
 fi
 apt-get install -y nginx certbot python3-certbot-nginx unzip
