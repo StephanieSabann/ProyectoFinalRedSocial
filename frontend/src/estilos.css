@@ -835,3 +835,9 @@ button.chip:hover { background: var(--fondo-hover); }
   .columna-feed > .cuadricula { margin-bottom: 8px; }
 }
 .login-columna > .login-cambiar { display: block; }
+
+/* Botón "Cerrar sesión" del perfil: solo en celular (en computadora está en el menú "Más") */
+.btn-salir-movil { display: none; }
+@media (max-width: 767px) {
+  .btn-salir-movil { display: inline-flex; color: var(--rojo-texto); }
+}

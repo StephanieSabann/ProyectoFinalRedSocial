@@ -38,7 +38,7 @@ function Vacio({ propio, guardados }) {
 export default function Perfil({ guardados = false }) {
   const { id: parametro } = useParams();
   const id = Number(parametro);
-  const { usuario, actualizarUsuario } = useSesion();
+  const { usuario, actualizarUsuario, cerrarSesion } = useSesion();
   const { refrescos, refrescar, abrirLista, abrirEditarPerfil, abrirVisor, mostrarMensaje } = useInterfaz();
   const abrirMencion = useAbrirMencion();
   const { abrirSelector, entrada } = useSubirHistoria();
@@ -94,6 +94,7 @@ export default function Perfil({ guardados = false }) {
               <>
                 <button className="btn btn-gris" onClick={abrirEditarPerfil}>Editar perfil</button>
                 <button className="btn btn-gris" onClick={abrirSelector}>Agregar historia</button>
+                <button className="btn btn-gris btn-salir-movil" onClick={() => cerrarSesion()}>Cerrar sesión</button>
               </>
             ) : <BotonSeguir persona={persona} alCambiar={() => refrescar('perfil', 'feed', 'historias')} />}
           </div>
