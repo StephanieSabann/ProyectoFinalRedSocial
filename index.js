@@ -38,6 +38,8 @@ app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  // La app no usa cámara, micrófono ni ubicación: el navegador los bloquea
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   next();
 });
 
@@ -53,7 +55,7 @@ app.use('/api', require('./rutas/notificacion'));
 app.get('/salud', (req, res) => res.status(200).json({ estado: 'ok', almacenamiento: almacenamiento.DRIVER }));
 
 // Ruta de la API que no existe -> 404
-app.use('/api', (req, res) => res.status(404).json({ mensaje: 'Ruta no encontrada' }));
+app.use('/api', (req, res) => res.status(404).json({ mensaje: 'Lo sentimos, esta página no está disponible' }));
 
 // Imágenes locales (solo en modo desarrollo sin S3)
 if (almacenamiento.DRIVER === 'local') {
@@ -79,4 +81,7 @@ app.use((error, req, res, next) => {
   });
 });
 
-app.listen(puerto, () => console.log(`Servidor escuchando en http://localhost:${puerto}`));
+app.listen(puerto, () => {
+  console.log(`Servidor escuchando en http://localhost:${puerto}`);
+  console.log(`Modo: ${process.env.NODE_ENV || 'development'} · Imágenes: ${almacenamiento.DRIVER}`);
+});

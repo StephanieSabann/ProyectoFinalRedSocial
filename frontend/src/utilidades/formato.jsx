@@ -31,7 +31,17 @@ export function tiempoLargo(fecha) {
   return d.toLocaleDateString('es', { day: 'numeric', month: 'long', ...(mismoAnio ? {} : { year: 'numeric' }) });
 }
 
-export const formatearNumero = (n) => Number(n || 0).toLocaleString('es');
+/**
+ * Números como en Instagram: completos hasta 9 999 y abreviados desde 10 000
+ * ("12,5 mil", "1,2 M"). Solo cambia cómo se muestran, no el valor.
+ */
+export function formatearNumero(n) {
+  const valor = Number(n || 0);
+  const abreviar = (x, sufijo) => `${(Math.floor(x * 10) / 10).toLocaleString('es')} ${sufijo}`;
+  if (valor >= 1000000) return abreviar(valor / 1000000, 'M');
+  if (valor >= 10000) return abreviar(valor / 1000, 'mil');
+  return valor.toLocaleString('es');
+}
 export const plural = (n, uno, varios) => `${formatearNumero(n)} ${n === 1 ? uno : varios}`;
 
 const PATRON = /([#@][\wáéíóúüñÁÉÍÓÚÜÑ.]+)/g;
