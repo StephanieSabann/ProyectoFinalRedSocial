@@ -1,0 +1,40 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "VerRecursos",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeInstances",
+        "ec2:DescribeInstanceStatus",
+        "ec2:DescribeAddresses",
+        "ec2:DescribeSecurityGroups",
+        "rds:DescribeDBInstances",
+        "s3:ListAllMyBuckets",
+        "route53:ListHostedZones",
+        "route53:ListResourceRecordSets",
+        "cloudwatch:GetMetricData",
+        "cloudwatch:ListMetrics"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IniciarYDetenerLaInstancia",
+      "Effect": "Allow",
+      "Action": ["ec2:StartInstances", "ec2:StopInstances", "ec2:RebootInstances"],
+      "Resource": "arn:aws:ec2:us-east-1:ID-DE-CUENTA:instance/ID-DE-INSTANCIA"
+    },
+    {
+      "Sid": "IniciarYDetenerRDS",
+      "Effect": "Allow",
+      "Action": ["rds:StartDBInstance", "rds:StopDBInstance"],
+      "Resource": "arn:aws:rds:us-east-1:ID-DE-CUENTA:db:red-social-sqlserver"
+    },
+    {
+      "Sid": "VerFotosDelBucket",
+      "Effect": "Allow",
+      "Action": ["s3:ListBucket", "s3:GetObject"],
+      "Resource": ["arn:aws:s3:::NOMBRE-DEL-BUCKET", "arn:aws:s3:::NOMBRE-DEL-BUCKET/*"]
+    }
+  ]
+}
