@@ -21,6 +21,26 @@ function Recaptcha({ llave, alCambiar, referencia }) {
   );
 }
 
+/**
+ * Campo con etiqueta flotante, como en Instagram: el texto de ayuda se hace
+ * pequeño y sube cuando escribes. Las contraseñas tienen el botón "Mostrar".
+ */
+function Campo({ etiqueta, type = 'text', value, onChange, ...resto }) {
+  const [visible, setVisible] = useState(false);
+  const esClave = type === 'password';
+  return (
+    <label className={`campo-flotante ${value ? 'lleno' : ''}`}>
+      <span>{etiqueta}</span>
+      <input type={esClave && visible ? 'text' : type} value={value} onChange={onChange} aria-label={etiqueta} {...resto} />
+      {esClave && value && (
+        <button type="button" className="campo-mostrar" onClick={() => setVisible(!visible)}>
+          {visible ? 'Ocultar' : 'Mostrar'}
+        </button>
+      )}
+    </label>
+  );
+}
+
 function BotonGoogle({ alError, separadorArriba = true }) {
   const { config, iniciarSesion } = useSesion();
   if (!config.googleClientId) return null;
@@ -75,8 +95,8 @@ function FormularioLogin() {
 
   return (
     <form onSubmit={enviar} noValidate>
-      <input type="text" placeholder="Correo electrónico o nombre de usuario" autoComplete="username" value={correo} onChange={(e) => setCorreo(e.target.value)} />
-      <input type="password" placeholder="Contraseña" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <Campo etiqueta="Correo electrónico o nombre de usuario" autoComplete="username" value={correo} onChange={(e) => setCorreo(e.target.value)} />
+      <Campo etiqueta="Contraseña" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
       <Recaptcha llave={config.recaptchaSiteKey} alCambiar={setRecaptcha} referencia={captcha} />
       <button type="submit" className="btn btn-primario btn-bloque" disabled={enviando || !correo.trim() || !password}>Iniciar sesión</button>
       <BotonGoogle alError={setError} />
@@ -113,10 +133,10 @@ function FormularioRegistro() {
   return (
     <form onSubmit={enviar} noValidate>
       <BotonGoogle alError={setError} separadorArriba={false} />
-      <input type="email" placeholder="Correo electrónico" autoComplete="email" {...campo('correo')} />
-      <input type="text" placeholder="Nombre completo" autoComplete="name" {...campo('nombre')} />
-      <input type="text" placeholder="Nombre de usuario" autoComplete="username" {...campo('username')} />
-      <input type="password" placeholder="Contraseña (8+ caracteres, letras y números)" autoComplete="new-password" {...campo('password')} />
+      <Campo etiqueta="Correo electrónico" type="email" autoComplete="email" {...campo('correo')} />
+      <Campo etiqueta="Nombre completo" autoComplete="name" {...campo('nombre')} />
+      <Campo etiqueta="Nombre de usuario" autoComplete="username" {...campo('username')} />
+      <Campo etiqueta="Contraseña" type="password" autoComplete="new-password" {...campo('password')} />
       <Recaptcha llave={config.recaptchaSiteKey} alCambiar={setRecaptcha} referencia={captcha} />
       <button type="submit" className="btn btn-primario btn-bloque" disabled={enviando}>Registrarte</button>
       {error && <p className="error-form">{error}</p>}
@@ -151,7 +171,12 @@ export default function Bienvenida() {
               ? <>¿No tienes una cuenta? <button type="button" className="link-azul" onClick={() => setModo('registro')}>Regístrate</button></>
               : <>¿Tienes una cuenta? <button type="button" className="link-azul" onClick={() => setModo('login')}>Inicia sesión</button></>}
           </div>
-          <p className="login-nota">Proyecto final · Desarrollo Web</p>
+          <footer className="login-pie">
+            <div className="login-pie-temas">
+              <span>Fotos</span><span>Historias</span><span>Explorar</span><span>Reconocimiento de rostros</span>
+            </div>
+            <p>Español · © {new Date().getFullYear()} Proyecto final · Desarrollo Web</p>
+          </footer>
         </div>
       </div>
     </section>

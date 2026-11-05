@@ -20,7 +20,7 @@
   --rojo-texto: #ed4956;
   --sombra: 0 4px 24px rgba(0, 0, 0, .12);
   --fondo-modal: rgba(0, 0, 0, .65);
-  --anillo: conic-gradient(from 210deg, #22d3ee, #6366f1, #d946ef, #f97316, #22d3ee);
+  --anillo: linear-gradient(45deg, #feda75 0%, #fa7e1e 25%, #d62976 50%, #962fbf 75%, #4f5bd5 100%);
   --anillo-visto: #c7c7c7;
   --ancho-nav: 244px;
   --radio: 8px;
@@ -96,9 +96,10 @@ img { display: block; max-width: 100%; }
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
   padding: 7px 16px; border-radius: var(--radio);
   font-weight: 600; font-size: 14px; line-height: 18px;
-  transition: background .15s, opacity .15s;
+  transition: background .15s, opacity .15s, transform .1s;
   cursor: pointer; white-space: nowrap;
 }
+.btn:active:not(:disabled) { transform: scale(.97); }
 .btn:disabled { opacity: .5; cursor: default; }
 .btn-primario { background: var(--azul); color: #fff; }
 .btn-primario:hover:not(:disabled) { background: var(--azul-hover); }
@@ -204,7 +205,32 @@ img { display: block; max-width: 100%; }
 }
 .login-caja input:focus { border-color: var(--texto-2); }
 .login-caja .btn { margin-top: 10px; }
+/* Campos con etiqueta flotante (como en Instagram) */
+.campo-flotante {
+  position: relative; display: flex; align-items: center; height: 38px;
+  background: var(--fondo-2); border: 1px solid var(--borde); border-radius: 3px; text-align: left;
+}
+.campo-flotante:focus-within { border-color: var(--texto-2); }
+.campo-flotante span {
+  position: absolute; left: 9px; right: 9px; top: 50%; transform: translateY(-50%);
+  font-size: 12px; color: var(--texto-2); pointer-events: none;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  transition: font-size .1s ease, top .1s ease, transform .1s ease;
+}
+.campo-flotante.lleno span { top: 3px; transform: none; font-size: 10px; }
+.login-caja .campo-flotante input {
+  height: 100%; padding: 9px 8px 7px; border: none; background: transparent; border-radius: 0;
+}
+.login-caja .campo-flotante.lleno input { padding: 14px 8px 2px; }
+.campo-mostrar {
+  padding: 0 10px; font-weight: 600; font-size: 14px; color: var(--texto); background: none; border: none; cursor: pointer;
+}
+.campo-mostrar:hover { opacity: .6; }
 .login-nota { text-align: center; color: var(--texto-2); font-size: 12px; margin-top: 8px; }
+/* Pie de la pantalla de bienvenida (como el de Instagram) */
+.login-pie { text-align: center; color: var(--texto-2); font-size: 12px; margin-top: 16px; }
+.login-pie-temas { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 16px; margin-bottom: 10px; }
+.login-pie p { margin: 0; }
 
 .error-form { color: var(--rojo-texto); font-size: 14px; line-height: 18px; margin-top: 12px; min-height: 0; }
 .error-form:empty { display: none; }
@@ -427,7 +453,8 @@ img { display: block; max-width: 100%; }
    =========================================================== */
 .cuadricula { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
 .celda { position: relative; aspect-ratio: 1 / 1; cursor: pointer; overflow: hidden; background: var(--fondo-3); }
-.celda img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.celda img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: filter .2s; }
+.celda:hover img { filter: brightness(.92); }
 #modal-lista, #modal-opciones { z-index: 300; }
 .celda .icono-multiple { position: absolute; top: 8px; right: 8px; color: #fff; filter: drop-shadow(0 0 3px rgba(0, 0, 0, .5)); }
 .celda .icono-multiple .icono { width: 20px; height: 20px; }
